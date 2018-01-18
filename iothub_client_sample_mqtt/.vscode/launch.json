@@ -2,56 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "C++ Launch in docker container",
-      "type": "cppdbg",
-      "request": "launch",
-      "program": "./iothub_client_sample_mqtt",
-      "args": [],
-      "stopAtEntry": false,
-      "cwd": "/app",
-      "environment": [],
-      "externalConsole": false,
-      "pipeTransport": {
-        "pipeCwd": "${workspaceRoot}",
-        "pipeProgram": "docker",
-        "pipeArgs": [
-          "exec",
-          "-i",
-          "c-mqtt",
-          "sh",
-          "-c"
-        ],
-        "debuggerPath": "/usr/bin/gdb"
-      },
-      "sourceFileMap": {
-        "/app": "${workspaceRoot}"
-      },
-      "linux": {
-        "MIMode": "gdb",
-        "setupCommands": [
-          {
-            "description": "Enable pretty-printing for gdb",
-            "text": "-enable-pretty-printing",
-            "ignoreFailures": true
-          }
-        ]
-      },
-      "osx": {
-        "MIMode": "lldb"
-      },
-      "windows": {
-        "MIMode": "gdb",
-        "setupCommands": [
-          {
-            "description": "Enable pretty-printing for gdb",
-            "text": "-enable-pretty-printing",
-            "ignoreFailures": true
-          }
-        ]
-      }
-    },
-    {
-      "name": "C++ Attach in docker container",
+      "name": "Debug IoT Edge Module (C)",
       "type": "cppdbg",
       "request": "attach",
       "program": "./iothub_client_sample_mqtt",
@@ -62,7 +13,7 @@
         "pipeArgs": [
           "exec",
           "-i",
-          "c-mqtt",
+          "my-c-mqtt",
           "sh",
           "-c"
         ],
