@@ -1,0 +1,15 @@
+FROM ubuntu
+
+WORKDIR /app
+RUN apt-get update && apt-get install -y software-properties-common python-software-properties \
+    cmake gcc g++ \
+    gdb procps
+RUN apt-get install -y git cmake build-essential curl libcurl4-openssl-dev libssl-dev uuid-dev
+RUN git clone -b modules-preview --recursive https://github.com/Azure/azure-iot-sdk-c.git .
+
+RUN mkdir cmake
+WORKDIR /app/cmake
+RUN cmake .. 
+RUN cmake --build .
+
+CMD ["sleep", "1h"]
