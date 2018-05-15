@@ -1,7 +1,7 @@
 ## Build Docker Image
 
 ```cmd
-docker build -t c-mqtt .
+docker build --rm -t c-mqtt .
 ```
 
 ## Run Docker Container

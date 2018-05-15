@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+#include "cJSON.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -24,7 +26,7 @@
 /*String containing Hostname, Device Id & Device Key in the format:                         */
 /*  "HostName=<host_name>;DeviceId=<device_id>;SharedAccessKey=<device_key>"                */
 /*  "HostName=<host_name>;DeviceId=<device_id>;SharedAccessSignature=<device_sas_token>"    */
-static const char* connectionString = "";
+static const char* connectionString = "HostName=azure-iot-toolkit-for-mobile.azure-devices.net;DeviceId=a002;SharedAccessKey=WBAWPjTrLUxofoUaVJCZOZW/hDM5qHh8Xn5v+EkEp44=";
 
 static int callbackCounter;
 static char msgText[1024];
@@ -125,6 +127,29 @@ static void SendConfirmationCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, v
     IoTHubMessage_Destroy(eventInstance->messageHandle);
 }
 
+static void deviceTwinCallback(DEVICE_TWIN_UPDATE_STATE update_state, const unsigned char* payLoad, size_t size, void* userContextCallback)
+{
+    (void)userContextCallback;
+
+    printf("Device Twin update received (state=%s, size=%zu): %s\r\n", 
+        ENUM_TO_STRING(DEVICE_TWIN_UPDATE_STATE, update_state), size, payLoad);
+    // JSON_value *jvalue = json_parse_string(payload);
+    // printf("----------value: %s\r\n", json_object_get_string(jvalue, "va"));
+    cJSON *json = cJSON_Parse(payLoad);
+    // printf("----------value: %s\r\n", cJSON_GetObjectItemCaseSensitive(json, "va")->valuestring);
+    cJSON *desiredData = cJSON_GetObjectItem(json, "desired");
+    if (desiredData) {
+        cJSON *data = desiredData->child;
+        while (data) {
+            printf(data->string);
+            printf(data->valueint);
+            data = data->next;
+        }
+    } else {
+        cJSON *data = cJSON_GetObjectItem(json, "TemperatureThreshold");
+    }
+}
+
 void iothub_client_sample_mqtt_run(void)
 {
     IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle;
@@ -162,6 +187,8 @@ void iothub_client_sample_mqtt_run(void)
                 printf("failure to set option \"TrustedCerts\"\r\n");
             }
 #endif // SET_TRUSTED_CERT_IN_SAMPLES
+
+            IoTHubClient_LL_SetDeviceTwinCallback(iotHubClientHandle, deviceTwinCallback, iotHubClientHandle);
 
             /* Setting Message call back, so we can receive Commands. */
             if (IoTHubClient_LL_SetMessageCallback(iotHubClientHandle, ReceiveMessageCallback, &receiveContext) != IOTHUB_CLIENT_OK)
