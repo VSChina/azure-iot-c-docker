@@ -133,8 +133,14 @@ static void deviceTwinCallback(DEVICE_TWIN_UPDATE_STATE update_state, const unsi
 
     printf("Device Twin update received (state=%s, size=%zu): %s\r\n", 
         ENUM_TO_STRING(DEVICE_TWIN_UPDATE_STATE, update_state), size, payLoad);
-    JSON_value *jvalue = json_parse_string(payLoad);
-    printf("----------value: %s\r\n", json_object_get_string(jvalue, "key"));
+    JSON_Value *root_value = json_parse_string(payLoad);
+    JSON_Object *root_object = json_value_get_object(root_value);
+    if (json_object_dotget_value(root_object, "desired.TemperatureThreshold") != NULL) {
+        printf("desired.TemperatureThreshold----------value: %f\r\n", json_object_dotget_number(root_object, "desired.TemperatureThreshold"));
+    }
+    if (json_object_get_value(root_object, "TemperatureThreshold") != NULL) {
+        printf("TemperatureThreshold----------value: %f\r\n", json_object_get_number(root_object, "TemperatureThreshold"));
+    }
 }
 
 void iothub_client_sample_mqtt_run(void)
@@ -217,14 +223,14 @@ void iothub_client_sample_mqtt_run(void)
                                 (void)printf("ERROR: Map_AddOrUpdate Failed!\r\n");
                             }
 
-                            if (IoTHubClient_LL_SendEventAsync(iotHubClientHandle, messages[iterator].messageHandle, SendConfirmationCallback, &messages[iterator]) != IOTHUB_CLIENT_OK)
-                            {
-                                (void)printf("ERROR: IoTHubClient_LL_SendEventAsync..........FAILED!\r\n");
-                            }
-                            else
-                            {
-                                (void)printf("IoTHubClient_LL_SendEventAsync accepted message [%d] for transmission to IoT Hub.\r\n", (int)iterator);
-                            }
+                            // if (IoTHubClient_LL_SendEventAsync(iotHubClientHandle, messages[iterator].messageHandle, SendConfirmationCallback, &messages[iterator]) != IOTHUB_CLIENT_OK)
+                            // {
+                            //     (void)printf("ERROR: IoTHubClient_LL_SendEventAsync..........FAILED!\r\n");
+                            // }
+                            // else
+                            // {
+                            //     (void)printf("IoTHubClient_LL_SendEventAsync accepted message [%d] for transmission to IoT Hub.\r\n", (int)iterator);
+                            // }
                         }
 
                     }
