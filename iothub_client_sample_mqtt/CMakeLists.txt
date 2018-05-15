@@ -21,9 +21,9 @@ if(WIN32)
     message(FATAL_ERROR "This CMake file is only support Linux builds!")
 endif()
 
-add_library(cjson
-    cJSON.c
-    cJSON.h
+add_library(parson
+    parson.c
+    parson.h
 )
 
 set(AZUREIOT_INC_FOLDER "/usr/include/azureiot" "/usr/include/azureiot/inc")
@@ -38,10 +38,10 @@ set(iothub_client_sample_mqtt_h_files
     iothub_client_sample_mqtt.h
 )
 
-add_executable(iothub_client_sample_mqtt ${iothub_client_sample_mqtt_c_files} ${iothub_client_sample_mqtt_h_files})
+add_executable(iothub_client_sample_mqtt ${iothub_client_sample_mqtt_c_files} )
 
 target_link_libraries(iothub_client_sample_mqtt
-    cjson
+    parson
     iothub_client
     iothub_client_mqtt_transport
     iothub_client_http_transport

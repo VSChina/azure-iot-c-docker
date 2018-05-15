@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#include "cJSON.h"
+#include "parson.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -133,21 +133,8 @@ static void deviceTwinCallback(DEVICE_TWIN_UPDATE_STATE update_state, const unsi
 
     printf("Device Twin update received (state=%s, size=%zu): %s\r\n", 
         ENUM_TO_STRING(DEVICE_TWIN_UPDATE_STATE, update_state), size, payLoad);
-    // JSON_value *jvalue = json_parse_string(payload);
-    // printf("----------value: %s\r\n", json_object_get_string(jvalue, "va"));
-    cJSON *json = cJSON_Parse(payLoad);
-    // printf("----------value: %s\r\n", cJSON_GetObjectItemCaseSensitive(json, "va")->valuestring);
-    cJSON *desiredData = cJSON_GetObjectItem(json, "desired");
-    if (desiredData) {
-        cJSON *data = desiredData->child;
-        while (data) {
-            printf(data->string);
-            printf(data->valueint);
-            data = data->next;
-        }
-    } else {
-        cJSON *data = cJSON_GetObjectItem(json, "TemperatureThreshold");
-    }
+    JSON_value *jvalue = json_parse_string(payLoad);
+    printf("----------value: %s\r\n", json_object_get_string(jvalue, "key"));
 }
 
 void iothub_client_sample_mqtt_run(void)
