@@ -13,7 +13,7 @@
         "pipeArgs": [
           "exec",
           "-i",
-          "my-c-mqtt",
+          "my-c-mqtt-parson",
           "sh",
           "-c"
         ],

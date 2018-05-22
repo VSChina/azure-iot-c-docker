@@ -69,19 +69,22 @@ int main() {
     /* serialization_example(); */
     /* persistence_example(); */
     json_set_allocation_functions(counted_malloc, counted_free);
-    test_suite_1();
-    test_suite_2_no_comments();
-    test_suite_2_with_comments();
-    test_suite_3();
-    test_suite_4();
-    test_suite_5();
-    test_suite_6();
-    test_suite_7();
-    test_suite_8();
-    test_suite_9();
-    test_suite_10();
-    printf("Tests failed: %d\n", tests_failed);
-    printf("Tests passed: %d\n", tests_passed);
+    while (1 == 1) {
+        test_suite_1();
+        test_suite_2_no_comments();
+        test_suite_2_with_comments();
+        test_suite_3();
+        test_suite_4();
+        test_suite_5();
+        test_suite_6();
+        test_suite_7();
+        test_suite_8();
+        test_suite_9();
+        test_suite_10();
+        printf("Tests failed: %d\n", tests_failed);
+        printf("Tests passed: %d\n", tests_passed);
+    }
+
     return 0;
 }
 

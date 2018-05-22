@@ -17,6 +17,11 @@ endmacro(compileAsC99)
 
 cmake_minimum_required(VERSION 2.8.11)
 
+add_library(my_parson
+    parson.c
+    parson.h
+)
+
 if(WIN32)
     message(FATAL_ERROR "This CMake file is only support Linux builds!")
 endif()
@@ -33,10 +38,10 @@ set(iothub_client_sample_mqtt_h_files
     iothub_client_sample_mqtt.h
 )
 
-add_executable(iothub_client_sample_mqtt ${iothub_client_sample_mqtt_c_files} )
+add_executable(iothub_client_sample_mqtt ${iothub_client_sample_mqtt_c_files} ${iothub_client_sample_mqtt_h_files} )
 
 target_link_libraries(iothub_client_sample_mqtt
-    parson
+    my_parson
     iothub_client
     iothub_client_mqtt_transport
     iothub_client_http_transport
