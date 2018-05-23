@@ -11,7 +11,7 @@ COPY . /app
 RUN mkdir cmake
 WORKDIR /app/cmake
 RUN ls /app
-RUN cmake .. 
+RUN cmake -DCMAKE_BUILD_TYPE=Debug .. 
 RUN make
 
 CMD ["./iothub_client_sample_mqtt"]
